@@ -1,0 +1,43 @@
+CEMDR is a C library to interfacing with an EMDR server .
+
+It simply "encapsulate" the required ZMQLIB and ZLIB to easily retireve data from a given relay.
+
+The library consist of 4 simple functions ( see "cemdr.h" for usage and parameters ) :
+
+- void cemdrLog (char *string);
+- PCemdr cemdrConnect(char *server_address, int timeout, int buffer_size);
+- void cemdrDisconnect(PCemdr cemdr);
+- char *cemdrGetJsonString(PCemdr cemdr);
+
+EXAMPLE :
+
+#include "stdlib.h"
+#include "stdio.h"
+#include "cemdr.h"
+
+int main(int argc, char **argv)
+{
+	PCemdr cemdr = NULL;
+	char *string = NULL;
+
+	cemdr=cemdrConnect("tcp://relay-us-central-1.eve-emdr.com:8050",0,0);
+
+	while(1)
+	{
+		string = cemdrGetJsonString(cemdr);
+		printf("%s\n",string);
+		free(string);
+	};
+
+	cemdrDisconnect(cemdr);
+
+	return 0;
+}
+
+
+PACKAGE CONTENTS:
+
+- SRC : the source code
+- LIB : lib, dll and header
+- DLLS : additional dlls required for ZMQLIB and ZLIB
+
